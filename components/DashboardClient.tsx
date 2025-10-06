@@ -23,16 +23,29 @@ import {
 interface DashboardClientProps {
   initialData: SurveyRow[];
   institutions: string[];
+  tipoEncuestas: string[];
 }
 
-export default function DashboardClient({ initialData, institutions }: DashboardClientProps) {
+export default function DashboardClient({ initialData, institutions, tipoEncuestas }: DashboardClientProps) {
   const [selectedInstitution, setSelectedInstitution] = useState('Todas');
+  const [selectedTipoEncuesta, setSelectedTipoEncuesta] = useState('Todas');
 
-  // Filter data based on selected institution
+  // Filter data based on selected institution and tipo_encuesta
   const filteredData = useMemo(() => {
-    if (selectedInstitution === 'Todas') return initialData;
-    return initialData.filter(d => d.institucion === selectedInstitution);
-  }, [initialData, selectedInstitution]);
+    let filtered = initialData;
+
+    // Filter by institution
+    if (selectedInstitution !== 'Todas') {
+      filtered = filtered.filter(d => d.institucion === selectedInstitution);
+    }
+
+    // Filter by tipo_encuesta
+    if (selectedTipoEncuesta !== 'Todas') {
+      filtered = filtered.filter(d => d.tipo_encuesta === selectedTipoEncuesta);
+    }
+
+    return filtered;
+  }, [initialData, selectedInstitution, selectedTipoEncuesta]);
 
   // Calculate all metrics from filtered data
   const metrics = useMemo(() => calculateDashboardMetrics(filteredData), [filteredData]);
@@ -46,11 +59,14 @@ export default function DashboardClient({ initialData, institutions }: Dashboard
 
   return (
     <div className="container mx-auto p-4 sm:p-6 lg:p-8">
-      {/* Institution Filter */}
+      {/* Filters */}
       <InstitutionFilter
         institutions={institutions}
         selectedInstitution={selectedInstitution}
         onSelectInstitution={setSelectedInstitution}
+        tipoEncuestas={tipoEncuestas}
+        selectedTipoEncuesta={selectedTipoEncuesta}
+        onSelectTipoEncuesta={setSelectedTipoEncuesta}
       />
 
       {/* KPI Cards */}

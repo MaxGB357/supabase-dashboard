@@ -72,3 +72,26 @@ export async function getUniqueInstitutions(): Promise<string[]> {
   const unique = [...new Set(data.map(d => d.institucion).filter(Boolean))];
   return ['Todas', ...unique.sort()];
 }
+
+/**
+ * Get unique tipo_encuesta values for dropdown filter
+ * @returns Array of tipo_encuesta values including "Todas"
+ */
+export async function getUniqueTipoEncuestas(): Promise<string[]> {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase
+    .from('encuestas_unificadas')
+    .select('tipo_encuesta');
+
+  if (error) {
+    console.error('Error fetching tipo_encuesta:', error);
+    return ['Todas'];
+  }
+
+  if (!data) return ['Todas'];
+
+  // Extract unique non-null values and sort
+  const unique = [...new Set(data.map(d => d.tipo_encuesta).filter(Boolean))];
+  return ['Todas', ...unique.sort()];
+}
