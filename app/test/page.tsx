@@ -1,5 +1,6 @@
 // Test page to verify Supabase connection and table structure
 import { createClient } from '@/lib/supabase/server';
+import Link from 'next/link';
 
 export const dynamic = 'force-dynamic';
 
@@ -11,7 +12,6 @@ export default async function TestPage() {
   let error = null;
   let tableExists = false;
   let availableTables: string[] = [];
-  let tableSchema: any = null;
 
   try {
     const supabase = await createClient();
@@ -50,17 +50,7 @@ export default async function TestPage() {
       availableTables = tablesData.map(t => t.table_name);
     }
 
-    // Test 3: Get table schema/structure
-    try {
-      const { data: schemaData } = await supabase
-        .from('encuestas_unificadas')
-        .select('*')
-        .limit(0);
-
-      tableSchema = schemaData;
-    } catch (e) {
-      // Schema fetch might fail, that's ok
-    }
+    // Test 3: Get table schema/structure (removed - not needed)
 
     connectionStatus = 'Connected ✓';
   } catch (e) {
@@ -224,7 +214,7 @@ export default async function TestPage() {
                 and verify the table has data
               </li>
               <li>
-                <strong>Table Name:</strong> Confirm the table is named exactly "encuestas_unificadas"
+                <strong>Table Name:</strong> Confirm the table is named exactly &quot;encuestas_unificadas&quot;
               </li>
               <li>
                 <strong>Row Level Security (RLS):</strong> Check if RLS is enabled and blocking access
@@ -264,12 +254,12 @@ export default async function TestPage() {
 
         {/* Back to Dashboard */}
         <div className="mt-6">
-          <a
+          <Link
             href="/"
             className="inline-block px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition"
           >
             ← Back to Dashboard
-          </a>
+          </Link>
         </div>
       </div>
     </div>
