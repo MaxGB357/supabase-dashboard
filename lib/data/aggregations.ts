@@ -151,7 +151,7 @@ export function aggregateLLMUsage(data: SurveyRow[]): LLMUsage {
   const llmCount: { [key: string]: number } = {};
 
   data.forEach(row => {
-    if (row.respuestas_especificas && typeof row.respuestas_especificas === 'object') {
+    if (row.respuestas_especificas && typeof row.respuestas_especificas === 'object' && 'modelos_ia_utilizados' in row.respuestas_especificas) {
       const modelos = row.respuestas_especificas.modelos_ia_utilizados || [];
       modelos.forEach(modelo => {
         llmCount[modelo] = (llmCount[modelo] || 0) + 1;
