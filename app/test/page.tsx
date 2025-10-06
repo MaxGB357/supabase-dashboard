@@ -124,7 +124,7 @@ export default async function TestPage() {
                 <li>Table name is different (check Supabase dashboard)</li>
                 <li>Row Level Security (RLS) is blocking access</li>
                 <li>Table is in a different schema</li>
-                <li>Anon key doesn't have read permissions</li>
+                <li>Anon key doesn&apos;t have read permissions</li>
               </ul>
             </div>
           </div>
